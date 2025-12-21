@@ -14,15 +14,15 @@ Combine the solutions to the subproblems into the solution for the original prob
 
 **Advantages**
 
-- Divide and Conquer algorithms produces more efficient solutions for many problems, e.g., O(n log n) (linearithmic) instead of O(n^2) (quadratic). For examples, Merge Sort with O(n log n), Quick Sort (average case) with O(n log n), and Binary Search with O(log n) times complexity. 
+- Divide and Conquer algorithms produce more efficient solutions for many problems, e.g., O(n log n) (linearithmic) instead of O(n^2) (quadratic). For examples, Merge Sort with O(n log n), Quick Sort (average case) with O(n log n), and Binary Search with O(log n) times complexity. 
 
-- Divides complex problems into understandable subproblems. Makes the code logically cleaner and more modular. 
+- This approach divides complex problems into understandable subproblems. Makes the code logically cleaner and more modular. 
 
 - The Divide and Conquer structure is ideal for recursive functions. Mathematical analysis of the algorithm can be done more systematically (e.g. using the Master Theorem).
 
 - Since subproblems can often be solved independently on multi-core systems and in distributed systems. They can be executed in parallel.
 
-- Time complexity can often be written in the form: T(n) = a*T(n/b) + f(n), where a is number of subproblems, n/b is a size of each subproblems, f(n) is a cost of dividing and combining. This standardizes the analysis.
+- The time complexity can often be written in the form: T(n) = a*T(n/b) + f(n), where a is number of subproblems, n/b is a size of each subproblems, f(n) is a cost of dividing and combining. This standardizes the analysis.
 
 **Master Theorem** for a recurrence relations: T(n) = a*T(n/b) + f(n), f(n) ∈ Θ(n^d), d >= 0
 
