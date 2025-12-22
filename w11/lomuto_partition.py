@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 def lomuto_partition(A, l, r):
   p = A[l]
   s = l
