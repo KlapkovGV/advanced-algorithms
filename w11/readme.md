@@ -44,3 +44,47 @@ Here a = 4, b = 2:
 3. f(n) = n^3 -> d = 3
 
    b^d = 2^3 = 8, a = 4 -> a < b^d -> T(n) ∈ Θ(n^3)
+
+The Master Method can be used to determine the running time of the divide and conquer algorithm for the maximum subarray problem as well as for matrix multiplication.
+
+**Disadvantages**
+
+- Recursive calls use extra space in the memory stack. If the recursion goes too deep, the program will crash with a Stack Overflow error.
+  
+- Recursion can lead to redundant calculations if subproblems are not independent.
+  
+- Some algorithms, like Merge Sort, require O(n) extra memory.
+
+**Comparing two different methods for finding the maximum value in a dataset: Linear Search and Divide and Conquer**
+
+Linear Search checks every element one by one from the beginning to the end of the array to find the largest one.
+
+ - Time Complexity: O(n)
+ - Memory Usage: O(1)
+ - Performance (CPU & RAM):
+      - Highly efficient for CPU's because it accesses data sequentially, making it cache-friendly;
+      - Uses minimum RAM;
+      - Runs very fast on modern processors with optimized code that avoids branching.
+
+Divide and Conquer method divides the array into two parts, finds the maximum in each part separately, and then compares them.
+
+ - Time Complexity: O(n)
+ - Memory Usage: O(log n) (due to the recursion stack)
+ - Performance (CPU & RAM):
+      - Places more load on the CPU due to function call overhead and stack memory usage;
+      - Poor cache performance because the data is constantly being divided.
+
+**Lomuto Partition** is one of the best-known partitioning methods used within the Quick Sort algorithm. This method divides an array into two groups by selecting a pivot element.
+
+   - Elements less than or equal to the pivot go to the left.
+   - Elements greater than the pivot go the right.
+
+How does it work?
+
+1. The pivot is usually selected as the last element of the array.
+2. i pointer: used to keep track of the elements smaller than pivot.
+3. j pointer: used to traverse the array.
+4. if j finds an element smaller than the pivot, it swaps with i.
+5. Finally, the pivot swaps with i+1, and the partitioning is complete.
+
+
