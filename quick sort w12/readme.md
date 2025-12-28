@@ -37,3 +37,62 @@ Space complexity:
 
 Naive partition algorithm
 
+It is a simple method that generally performs the process of dividing arrays or sets into smaller pieces. This algorithm is generally less efficient compared to more complex and optimized algorithms, but it can be used as a simple approach to obtain a solution for a specific problem.
+
+General Structure of the algorithm
+
+1. Take an array;
+2. Divide this array into two;
+3. This process is repeated in the same way for each part.
+
+In general, it is similar to the partitioning step used in the quick sort algorithm. However, naive partition usually works in a simpler, less optimized way.
+
+Disadvantages of Naive Partition:
+- this algorithm is generally not very efficient because, in most cases, it performs more operations than better-optimized algorithms;
+- time compexity can generally be O(n^2) because it may be necessary to compare elements one by one to divide the array properly ay each step.
+
+Naive Partition algorithm can be used in small datasets or applications that do not require optimization.
+
+```python
+def naive_partition(arr, low, high):
+   # Select a pivot
+   pivot = arr[high]
+
+   # Create a nex (extra) array to hold partitioned elements
+   temp = [0] * (high - low + 1)
+   index = 0
+
+   # Add smaller elements to the new array
+   for i in range(low, high + 1):
+      if arr[i] < pivot:
+         temp[index] = arr[i]
+         index += 1
+
+   # Add equal elements (including the pivot)
+   new_pivot_index = index + low
+   for i in range(low, high + 1):
+      if arr[i] == pivot:
+         temp[index] = arr[i]
+         index += 1
+
+   # Add larger elements
+   for i in range(low, high + 1):
+      if arr[i] > pivot:
+         temp[index] = arr[i]
+         index += 1
+
+   # Copy the partitioned elements back into the original array
+   for i in range(len(temp)):
+      arr[low + i] = temp[i]
+
+return new_pivot_index
+
+list = [3, 7, 8, 5, 2, 1, 9, 5, 4]
+pivot_idx = naive_partition(list, 0, len(list) - 1)
+```
+
+Characteristics of this code:
+- it iterates through the array multiple times to group elements smaller than, equal to, and larger than the pivot;
+- is uses a temp list of size O(n);
+- unlike optimized versions, it simply copies values into a new structure.
+
