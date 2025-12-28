@@ -58,7 +58,7 @@ def naive_partition(arr, low, high):
    # Select a pivot
    pivot = arr[high]
 
-   # Create a nex (extra) array to hold partitioned elements
+   # Create a new (extra) array to hold partitioned elements
    temp = [0] * (high - low + 1)
    index = 0
 
