@@ -123,3 +123,50 @@ list = [3, 7, 8, 5, 2, 1, 9, 5, 4]
 pivot_idx = lomuto_partition(data, 0, len(data) - 1)
 ```
 
+**Hoare Partition**
+- pivot is the first element;
+- two pointers are used (from the left and from the right);
+- elements in the wrong place are swapped;
+- the process ends when the pointers cross each other.
+
+This algorithm fast, has fewer swaps, and ideal for large arrays. Although, algrothm logic has more complex logic.
+
+```python
+def hoare_partition(arr, low, high):
+   pivot = arr[low]
+
+   # initialize left (i) and right (j) pointers. They start outside the range and move inward
+   i = low - 1
+   j = high + 1
+
+   while True:
+      i += 1
+      while arr[i] < pivot:
+         i += 1
+
+      j -= 1
+      while arr[j] > pivot:
+         j -= 1
+
+      arr[i], arr[j] = arr[j], arr[i]
+
+list = [3, 7, 8, 5, 2, 1, 9, 5, 4]
+split_point = hoare_partition(list, 0, len(list) - 1)
+```
+
+Efficiency of the algorithm is considered very fast because it performs fewer swaps on average. 
+
+**Comparison of Partitioning Methods**
+
+| Feature | Naive | Lomuto | Hoare |
+| :--- | :---: | :---: | :---: |
+| **Extra Array** | + | - | - |
+| **In-place** | - | + | + |
+| **Swap Count** | 0 | High | Low |
+| **Pivot Position** | Middle | Correct Spot | Uncertain |
+| **Performance** | Low | Medium | High |
+| **Suitability for Quick Sort** | - | + | ++ |   
+
+**Median of three algorithm**
+
+A simple but effective method used to improve pivot selection in quick sort.
