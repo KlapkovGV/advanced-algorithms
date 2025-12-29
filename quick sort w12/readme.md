@@ -169,4 +169,65 @@ Efficiency of the algorithm is considered very fast because it performs fewer sw
 
 **Median of three algorithm**
 
-A simple but effective method used to improve pivot selection in quick sort.
+A simple but effective method used to improve pivot selection in quick sort. Three elements are selected (typically the first, middle, and last elements). The median (or middle value) of these three is chosen as the pivot. It proposes to prevent poor pivot selection and to achieve a more balanced partition. 
+
+To improve Quick Sort implementation, we can use the Median of Three logic to select a better pivot, which helps avoid the O(n^2) worst-case performance. 
+
+This method selects three elements - the first, middle, and last - and uses their median value as the pivot.
+
+```python
+def get_median_pivot(arr, low, high):
+   mid = (low + high) // 2
+
+   # sort elements to find the median
+   if arr[mid] < arr[low]:
+      arr[low], arr[mid] = arr[mid], arr[low]
+   if arr[high] < arr[low]:
+      arr[low], arr[high] = arr[high], arr[low]
+   if arr[high] < arr[mid]:
+      arr[mid], arr[high] = arr[high], arr[mid]
+
+   # the median is now at arr[mid]. We can swap it with arr[high] to use with Lomuto Partition
+   arr[mid], arr[high] = arr[high], arr[mid]
+   return arr[high]
+
+def quick_sort(arr, low, high):
+   if low < high:
+      # pick better pivot
+      get_median_pivot(arr, low, high)
+
+      # partition the array using the selected pivot
+      p = lomuto_partition(arr, low, high)
+
+      # recursively sort left and right parts
+      quick_sort(arr, low, p - 1)
+      quick_sort(arr, p + 1, high)
+```
+
+![quick sort](https://github.com/user-attachments/assets/61565274-c547-4629-b966-c1d30a1de433)
+
+to understand why we use p - 1 and p + 1 in the recursive calls
+
+This Divide and Conquer approach continues until the entire array matches the final sorted result: [1, 2, 3, 4, 5, 5, 7, 8, 9]
+
+**The Ninther**
+
+This method is an advanced technique used to select a better pivot in Quick Sort.
+
+The Ninther method determines a pivot by selecting 9 elements from the array:
+- first, it calculates three median of three values from these elements;
+- then, it takes the median of these 3 medians to determine the final pivot.
+
+It useful to achieve a more balanced partition and to reduce the probability of the worst-case scenario.
+
+Why is it necessary? 
+
+The performance of Quick Sort is highly dependent on pivot selection:
+- poor pivot results to O(n^2) complexity;
+- good pivot results to O(n log n) complexity.
+- the Ninther is much more reliable than simple methods like piking the first or last element as the pivot.
+
+
+
+
+
