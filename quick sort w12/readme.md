@@ -96,3 +96,30 @@ Characteristics of this code:
 - is uses a temp list of size O(n);
 - unlike optimized versions, it simply copies values into a new structure.
 
+**Lomuto Partition**
+- pivot is the last element;
+- smaller elements are kept on the left;
+- a swap is performed every time a smaller element is found.
+
+Easy to code and the pivot ends up in the correct spot. But algorithm performes a lot of swaps and identical elements decrease performance.
+
+```python
+def lomuto_partition(arr, low, high):
+   # pivot is the last element
+   pivot = arr[high]
+
+   i = low - 1
+
+   for j in range(low, high):
+      if arr[j] <= pivot:
+         i += 1
+         arr[i], arr[j] = arr[j], arr[i]
+
+   arr[i + 1], arr[high] = arr[high], arr[i + 1]
+
+   return i + 1
+
+list = [3, 7, 8, 5, 2, 1, 9, 5, 4]
+pivot_idx = lomuto_partition(data, 0, len(data) - 1)
+```
+
