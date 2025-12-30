@@ -227,6 +227,61 @@ The performance of Quick Sort is highly dependent on pivot selection:
 - good pivot results to O(n log n) complexity.
 - the Ninther is much more reliable than simple methods like piking the first or last element as the pivot.
 
+Here is an implementation showing how the Ninther is used to select a pivot
+```python
+def get_median_of_three(arr, a, b, c):
+   """Helper to find the median of three elements"""
+   if (arr[a] < arr[b]):
+      if (arr[b] < arr[c]): return b
+      if (arr[a] < arr[c]): return c
+      return a
+   else:
+      if (arr[a] < arr[c]): return a
+      if (arr[b] < arr[c]): return c
+      return b
+
+def get_ninther(arr, low, high):
+   """Implements Tukey's Ninther: Divide 9 elements into 3 groups of 3, find their medians, then find the median of those 3 medians."""
+   length = high - low + 1
+   gap = length // 8
+
+   # select 9 spread-ot indices
+   # m1, m2, m3 are the medians of the three groups
+   m1 = get_median_of_three(arr, low, low + gap, low + 2 * gap)
+   m2 = get_median_of_three(arr, low + 4 * gap, low + 5 * gap, low + 6 * gap)
+   m3 = get_median_of_three(arr, high - 2 * gap, high - gap, high)
+
+   # return the index of the median of the three medians
+   return get_median_of_three(arr, m1, m2, m3)
+
+def quick_sort_ninther(arr, low, high):
+   if low < high:
+      # choose pivot using Ninther strategy
+      pivot_idx = get_ninther(arr, low, high)
+
+      # move pivot to the end for partitioning
+      arr[pivot_idx], arr[high] = arr[high], arr[pivot_idx]
+
+      # partition
+      pivot = arr[high]
+      i = low - 1
+      for j in range(low, high):
+         if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+      arr[i + 1], arr[high] = arr[high], arr[i + 1]
+
+      p = i + 1
+
+      # recursive calls
+      quick_sort_ninther(arr, low, p - 1)
+      quick_sort_ninther(arr, p + 1, high)
+
+list = [42, 7, 101, 15, 33, 5, 88, 2, 56, 11, 9, 24, 67, 1]
+quick_sort_ninther(data, 0, len(list) - 1)
+```
+
+Note that using the Ninther on a tiny array (like 5 elements) would result in index errors or redundant work.
 
 
 
