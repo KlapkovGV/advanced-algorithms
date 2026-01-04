@@ -73,5 +73,22 @@ What is Timsort? It uses Insertion Sort for small sub-arrays (usually between 32
 ![comparing](https://github.com/user-attachments/assets/f36937df-3869-4216-8e32-25b48829be08)
 
 
+## Dynamic Programming
+
+Dynamic programming is a method used in computer science, mathematics, economics, and bioinformatics to solve complex problems by breaking them down into overlapping subproblems. It involves solving each subproblem only once and saving this solution to be used later in solving the complex problem.
+
+Key characteristics:
+- time efficiency: when a subproblem need to be solved again, the previously saved solution is used, which saves time;
+- space-time trade-off: saving these solutions requires more memory space. In other words, dynamic programming algorithms trade space to gain time;
+- usage: these algorithms are commonly used in solving optimization problems.
+
+**Fundamentals of dynamic programming**
+- a design technique similar to divide-and-conquer;
+- in the divide-and-conquer method, subproblems must be independent;
+- in dynamic programmingm even if subproblem are not independent, it can still be applied;
+- dynamic programming solves each subproblem only once and stores the solution in a table;
+- if the same subproblem arises more than oncem it does not re-solve it; instead, it uses the value already stored in the table;
+- in this way, the speed of the solution process is inreased.
+
 
     
