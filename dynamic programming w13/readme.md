@@ -90,5 +90,55 @@ Key characteristics:
 - if the same subproblem arises more than oncem it does not re-solve it; instead, it uses the value already stored in the table;
 - in this way, the speed of the solution process is inreased.
 
+### Difference between Divide and Conquer and Dynamic programming
+
+![difference](https://github.com/user-attachments/assets/e006cf90-380a-4996-a523-5d8f5629c68f)
+
+examples:
+- D&C: Merge Sort, Quick Sort;
+- DP: Fibonacci, LCS (Longest Common Subsequence), Knapsack.
+
+### Advantages
+- Difficult and complex problems can be solved more easily by breaking them down into interrelated sub-problems using the dynamic programming approach;
+- Sequential decision-making advantage is particularly crucial for problems invilving sequential decisions, such as production adjustment and planning;
+- Dynamic programming has a flexible structure that can be applied to other mathematical programming problems; therefore, it is more of an optimization approach than just a single technique;
+- Integer programming problems and non-linear integer programming problems can be solved using the dynamic programming approach;
+- The computational method of dynamic programming allows for the performance of sensitivity analysis.
+
+### Disadvantages
+
+- Dynamic programming has concepts that are harder to understand than other mathematical programming techniques; an expert is definitely needed to comprehend the problem and solve it using an appropriate formula;
+- Unlike the Simplex method, it does not have a general algorithm. Because of this, while there are very few software packages written for dynamic programming, these packages are insufficient in most cases or contain significant problems;
+- The problem of dimensionality. Having a large number of values for the state variable and decision variable significant increases the size of the tables created for each stage;
+- The lack of an effective computational algorithm makes dynamic programming more conceptual than practical in making real dynamic decisions.
+
+### Use cases
+
+Where is it used?
+
+Dynamic programming can be applied to all problems that can be broken down into smaller sub-problems with the same solution structure. However, it shows its true value in problems that would otherwise be solved in exponential time using a brute-force approache. Problems that can be solved with dp:
+- rod-cutting problems;
+- knapsack problem;
+- matrix-chain multiplication;
+- assembly line scheduling;
+- various string problems: LCS, Longest increasing subsequence, Levenshtein distance.
+
+### Dynamic Programming solution steps
+1. Define the problem:
+   - identify the repeating sub-problems and the optimal subtructure within the problem.
+2. Determine States:
+   - express the state of each sub-problem with a variable.
+3. Find the transition formula:
+   - establish a relationship (recurrence relation) that combines the solutions of the sub-problems.
+4. Use a table or memory structure:
+   - design a table or array to store the results of the sub-problems.
+5. Extract the result:
+   - build the solution to the main problem from the solution of all the sub-problems.
+  
+ ### How is the memoization technique used in dynamic programming?
+
+Dynamic programming helps solve problems with overlapping sub-problems and optimal substructure properties efficiently. The core idea is to break the problem into smaller sub-problems and save the result for future use, thereby eliminating the need to re-calculate the result repeatedly. There are two approaches to formulating a dynamic programming solution:
+
+1. Top-Down Approach.
 
     
