@@ -139,6 +139,89 @@ Dynamic programming can be applied to all problems that can be broken down into 
 
 Dynamic programming helps solve problems with overlapping sub-problems and optimal substructure properties efficiently. The core idea is to break the problem into smaller sub-problems and save the result for future use, thereby eliminating the need to re-calculate the result repeatedly. There are two approaches to formulating a dynamic programming solution:
 
-1. Top-Down Approach.
+1. Top-Down Approach
 
+This approach follows the memoization technique. It consists of recursion and caching operations. In the calculation, recursion reoresents the process of calling functions repeatedly, while the cache represents the process of storing intermediate results.
+
+2. Bottom-Up Approach
+
+This approach uses the tabulation technique to implement the dynamic programming solution. It addresses the same issues but without recursion. In this approach, iteration replaces recursion. Consequently, there is no stack overflow error or the additional overhead of recursive procedures. 
     
+![dp](https://github.com/user-attachments/assets/1e9aee03-16c9-48b4-922e-dbc2ede30694)
+
+### Tabulation and Memory in dynamic programming
+
+Tabulation and memory (storage) are two techniques used to implement dynamic programming. Both techniques are used when there are overlapping sub-problems. Below is a general overview of the two approaches:
+
+**Memoization**:
+- top-down approach: starts with the main problem and breaks it down;
+- stores results in a table: saves the outcomes of function calls in a lookup table;
+- recursive application: uses recursion to solve the problem;
+- on-demend filling: entries are filled into the records only when they are needed.
+
+**Tabulation**:
+- bottom-up approach: starts with the smallest sub-problems and builds up to the main goal;
+- stores results in a table: deposits the results of sub-problems into a table;
+- iterative application: uses loops (iterarion) instead of recursion;
+- sequential filling: records are filled from the smallest dimension toward the final dimension in a bottom-up manner.
+
+![dp1](https://github.com/user-attachments/assets/b5d83298-619d-4659-9236-ab77e285413c)
+
+### Code implementation for calculating Fibonacci Numbers using three different methods
+
+Method 1: Naive Recursive
+```python
+# time complexity: O(2^n)
+
+def fib(n):
+  if n <= 1:
+    return n
+  return fib(n-1) + fib(n-2)
+```
+
+Method 2: Memoization (Top-Down)
+```python
+# time complexity: O(n)
+# space: O(n) include call stack and dictionary
+
+memo = {}
+def fib(n):
+  if n in memo:
+    return memo[n]
+  if n <= 1:
+    return n
+  memo[n] = fib(n-1) + fib(n-2)
+  return memo[n]
+```
+
+Method 3: Tabulation (Bottom-Up)
+```python
+# time complexity: O(n)
+# space: O(n)
+
+def fib(n):
+  dp = [0, 1]
+  for i in range(2, n+1):
+    dp.append(dp[i-1] + ap[i-2])
+  return dp[n]
+```
+
+```python
+# alternative: space optimized
+# time complexity: O(n)
+# space: O(1)
+
+def fib(n):
+  a, b = 0, 1
+  for _ in range(n):
+    a, b = b, a + b
+  return a
+```
+
+### LCS Algorithm (Longest Common Subsequence)
+
+The LCS algorithm is a dynamic programming-based algorithm used to find the longest common subsequence between two sequences.
+
+**Basic concepts**
+
+A new sequence obtained by deleting some elements from a sequence without changing their original order. A subsequence that appears in both sequences in the same order. The longest one among all common subsequences.
