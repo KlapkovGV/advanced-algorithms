@@ -225,3 +225,123 @@ The LCS algorithm is a dynamic programming-based algorithm used to find the long
 **Basic concepts**
 
 A new sequence obtained by deleting some elements from a sequence without changing their original order. A subsequence that appears in both sequences in the same order. The longest one among all common subsequences.
+
+**Algorithm steps**
+1. A table of size (m + 1) * (n + 1) is created, where m is the length of the first sequence and n is the length of the second sequence;
+2. The first row and the first column are filled with 0s. If the elements match LCS[i][j] = LCS[i-1][j-1] + 1. If the elements are different LCS[i][j] = max(LCS[i-1][j], LCS[i][j-1]);
+3. The value in the bottom-right corner of the table gives the length of the LCS.
+
+![LCS](https://github.com/user-attachments/assets/b9b9dc3b-e7bc-4811-b2c7-f476e7a8be8e)
+
+- Time complexity: O(mn) where m and n are the lengths of the input sequences.
+- Space complexity: O(mn), can be optimized to O(min(m,n))
+
+**Aplication areas**
+- bioinformatics;
+- file comparison (diff tools for comparing files and detecting changes);
+- text processing (edit distance calculations and text similarity analysis);
+- version control systems (identifying changes between different versions of documents or code).
+
+### Finding all possible LCS from the LCS table
+
+After the LCS table is created, a backtracking method is used to find all possible longest common subsequence from this table.
+
+**Step by step operation**
+1. Start from the bottom-right corner (m, n);
+2. If the characters match:
+   - this character is a part of the LCS;
+   - move to the top-left diagonal cell (m-1, n-1).
+3. If the characters are different:
+   - compare the values of the top and left cells;
+   - move in the direction of the larger value;
+   - if they are equal, continue in both directions.
+4. When row/column 0 is reached, add an empty string.
+
+**Optimization and Notes**
+1. We can store intermediate results to avoid visiting the same cell repeatedly;
+2. If there are many LCS, a numerical result or a sample might be requested;
+3. Sorting the results alphabetically can be useful.
+
+python implementation
+
+```python
+def find_all_lcs(X, Y, m, d, dp):
+  if m == 0 or n == 0:
+    return {""]
+
+  if X[m-1] == Y[n-1]:
+    lcs_set = find_all_lcs(X, Y, m-1, n-1, dp)
+    return {lcs + X[m-1] for lcs in lcs_set}
+  else:
+    lcs_set = set()
+
+    if dp[m-1][n] >= dp[m][n-1]:
+      lcs_set.update(find_all_lcs(X, Y, m-1, n, dp))
+
+    if dp[m][n-1] >= dp[m-1][n]:
+      lcs_set.update(find_all_lcs(X, Y, m, n-1, dp))
+
+    return lcs_set
+```
+
+### Detailed stp by step example of the LCS backtracking process to find the actual sequence string from a completed table
+
+The process starts from the bottom-right corner of the DP table (dp[7][6] = 4) and follows specific rules.
+
+**Backtracking rules** 
+- if X[i-1] == Y[j-1], add the character to the LCS and move diagonally up-left (i--, j--);
+- if characters are not equal, compare dp[i-1][j] and dp[i][j-1] and move toward the larger value.
+
+**Execution**
+
+![lcs2](https://github.com/user-attachments/assets/ac455877-3f18-44b5-add7-1140e628ff80)
+
+The trace follows the yellow and red highlighted path in the table:
+- step 1: at (7, 6), B neq A. Compare dp[6][6] and dp[7][5] are both 4. Move left to j = 5;
+- step 2: at (7, 5), B == B. Add B to LCS, move diagonally to (6, 4);
+- step 3: at (6, 4), A == A. Add A to LCS, move diagonally to (5, 3);
+- step 4: at (5, 3), D neq C, dp[4][3] = 2 and dp[5][2] = 2. Move up to i = 4;
+- step 5: at (4, 3), B neq C. dp[3][3] = 2 and dp[4][2] = 1. Move up to i = 3;
+- step 6: at (3, 3), C == C. Add C to LCS, move diagonally to (2, 2);
+- step 7: at (2, 2), B neq D, dp[1][2] = 0 and dp[2][1] - 1. Move left to j = 1;
+- step 8: at (2, 1), B == B. Add B to LCS, move diagonally to (1, 0);
+- end: reached j = 0. Stop.
+
+**Result**
+- characters found (reverse order): B, A, C, B;
+- final LCS: BCAB
+- length: 4
+
+### Longest Increasing Subsequence (LIS) Algorithm
+
+The LIS algorithm is used to find the longest increasing subsequence that can be formed by selecting elements from a sequence without changing their original order.
+
+**Basic Concepts**
+
+A subsequent element being larger than the previous one. A new sequence obtained by deleting some elements from a sequence (while maintaining order). The longest subsequence that satisfies these conditions.
+
+example:
+- sequence: [10, 22, 9, 33, 21, 50, 41, 60, 80]
+- LIS: [10, 22, 33, 50, 60, 80] (Length 6)
+- another possibility: [10, 22, 33, 41, 60, 80]
+
+**Logic of Operation:**
+1. Create a dp array of length n consisting entirely of 1s;
+2. For each element, check all elements that come before it;
+3. If a previous element is smaller and the dp value can be increased, update it: dp[i] = dp[j] + 1;
+4. Return the maximum velue found in the dp array.
+
+python implementation
+```python
+# time complexity: O(n^2)
+
+def lis(arr):
+  n = len(arr)
+  dp = [1] * n # dp = [1, 1, 1, 1, 1, 1] where n=6
+
+  for i in rnage(1, n):
+    for j in range(i):
+      if arr[i] > arr[j] and dp[i] < dp[j] + 1:
+        dp[i] = dp[j] + 1
+  return max(dp)
+```
