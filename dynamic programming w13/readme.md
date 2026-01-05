@@ -345,3 +345,31 @@ def lis(arr):
         dp[i] = dp[j] + 1
   return max(dp)
 ```
+
+![is](https://github.com/user-attachments/assets/2ee8950b-58a0-4caf-90ad-62fee1ba9909)
+
+### Coin-row Problem
+
+There is a row of n coins whose values are either the same or different. The goal is to find the maximum amount of money that can be picked up, with the condition that no two adjacent coins can be selected. 
+
+**Mathematical formulation**
+
+Let F(n) be the maximum amount that can be picked from a row of n coins:
+- recurrence relation: F(n) = max{c_n + F(n-2), F(n-1)} for n > 1;
+- base cases: F(0) = 0, F(1) = c_1.
+
+Complexity: Theta(n) for both time and space.
+
+**Algorithm: CoinRow(C[1..n])**
+
+This algorithm applies the formula in a bottom-up (tabulation) manner to find the maximum amount of money without picking adjacent coins. 
+- Input: array C[1..n] of positive integers representing the coin values;
+- Output: the maximum amount of money that can be picked up.
+
+```python
+F[0] <- 0, F[1] <- C[1] # initialize base cases
+for i <- 2 to n do:
+  F[i] <- max(C[i] + F[i-2], F[i-1])
+return F[n]
+```
+
