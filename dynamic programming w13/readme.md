@@ -373,3 +373,52 @@ for i <- 2 to n do:
 return F[n]
 ```
 
+![coinrow](https://github.com/user-attachments/assets/67965d7e-076c-4e2c-ab82-3d72a290ad75)
+
+### Apply the dynamic programming algorithm to find all the solutions to the change-making problem for the denomination 1, 3, 5 and the amount n = 9
+
+To solve the change-making problem using dynamic programming, we want to find the minimum number of coins needed to make change for a specific amount.
+
+Let dp[i] be the minimum number of coins needed to make the amount i. The recurrence relation is: dp[i] = min(dp[i - coin_j] + 1), for all coins where i - coin_j >= 0. 
+
+```python
+def solve_coin_change(coins, amount):
+  dp = [amount + 1] * (amount + 1)
+  dp[0] = 0
+
+  # bild the dp table
+  for i in range(1, amount + 1):
+    for coin in coins:
+      if i - coin >= 0:
+        dp[i] = min(dp[i], dp[i - coin] + 1)
+
+  min_coins = dp[amount]
+  if min_coins > amount:
+    return Nonem, []
+
+  # function to backtrack and find all combinations for the minimum count
+  def get_all_combinations(target, count, start_index):
+    if target == 0 and count == 0:
+      return [[]]
+    if target <= 0 or count <= 0:
+      return []
+
+    results = []
+    for i in range(start_index, len(coins)):
+      res = get_all_combinations(target - coins[i], count - 1, i)
+      for r in res:
+        results.append([coins[i]] + r)
+    return results
+
+  all_solutions = get_all_combinations(amoun, min_coins, 0)
+  return min_coins, all_solutions
+
+denominations = [1, 3, 5]
+n = 9
+
+min_count, solutions = solve_coin_change(denominations, n)
+```
+
+
+
+
