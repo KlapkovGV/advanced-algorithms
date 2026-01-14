@@ -74,3 +74,75 @@ This table illustrates the dependency of the current cell $F(i, j)$ on previousl
 - **$j$**: Current capacity of the sub-knapsack.
 - **$F(i, j)$**: The maximum value achievable using a subset of the first $i$ items with a combined weight $\leq j$.
 - **Goal**: The final answer, representing the maximum value for $n$ items and capacity $W$.
+
+**The Data**
+
+The table in the top right lists the items available for a knapsack with a total capacity W=5
+
+| Item (i) | Weight (w_i) | Value (v_i) |
+| :--- | :---: | :---: |
+| 1 | 2 | $12 |
+| 2 | 1 | $10 |
+| 3 | 3 | $20 |
+| 4 | 2 | $15 |
+
+**Step-by-Step Calculation**
+
+This shows the manual calculation for the first two items (i = 1 and i = 2) across al possible capacities (j = 1 to 5).
+
+The table is just the input list. In that table:
+- i is the row number;
+- w and v are just properties of those items.
+
+Row i=1 (item 1: weight 2, value 12)
+- at j=1: the capacity is too small for item 1 (1-2 < 0), so the value is 0;
+- at j=2 to 5: the capacity fits item 1. Since there are no previous items to compare against, the max value becomes the value of item 1 (12).
+
+To see j=2 to 5, we have to move the input list to the Dynamic Programming table. In a DP table, j represents the capacity of the bag, and it creates the columns. 
+
+We solving this problem for a bag with a maximum capacity of 5, our table would expand to look like this:
+
+| j=0 | j=1 | j=2 | j=3 | j=4 | j=5 |
+|-----|-----|-----|-----|-----|-----|
+| **i=0** | 0 | 0 | 0 | 0 | 0 | 0 |
+| **i=1** | 0 | 0 | 12 | 12 | 12 | 12 |
+| **i=2** | 0 | - | - | - | - | - |
+| **i=3** | 0 | - | - | - | - | - |
+| **i=4** | 0 | - | - | - | - | - |
+
+So dynamic programming is bult on the idea of saving answers to smaller version of our problem.
+
+Row i=2 (item 2: weight 1, value 10)
+- at j=1: can we fit item 2? Yes (1 - 1 = 0). Compare the previous row's value (0) vs. item 2's value (10). Result: 10;
+- at j=3: can we fit item 2? yes.
+  - option A (leave it): look at F(1,3), which is 12;
+  - option B (take it): take item 2 (value 10) + whatever fit in the remaining weight (3 - 1 = 2). In the privious row, weight 2 was worth 12. So, 10 + 12 = 22;
+  - result: max(12, 22) is 22.
+- at j=4: can we fit item 2? yes (4-1)=3.
+  - max(F(2-1, 4), 10 + F(2-1, 4-1)) - max(10, 22). Result: 22;
+- at j=5: the process is same.
+
+| i | j=0 | j=1 | j=2 | j=3 | j=4 | j=5 |
+|-----|-----|-----|-----|-----|-----|-----|
+| **i=0** | 0 | 0 | 0 | 0 | 0 | 0 |
+| **i=1** | 0 | 0 | 12 | 12 | 12 | 12 |
+| **i=2** | 0 | 10 | 22 | 22 | 22 | 22 |
+| **i=3** | 0 | - | - | - | - | - |
+| **i=4** | 0 | - | - | - | - | - |
+
+Row i=3 (item 3: weight 3, value 20):
+- at j=1: can we fit item 3? no (1 - 3 < 0), because the capacity is too small for item 3. Value is 10;
+- at j=2: can we fit item 3? no (2 - 3 < 0). So value is from the previous item - 12;
+- at j=3: can we fit item 3? yes (3 - 3 = 0). max(F(3-1, 3), 20 + F(3-1, 3-3)) -> max(22, 20). Result: 22;
+- at j=4: max(F(3-1, 4), 20 + F(3-1, 4-3)) -> max(22, 30). Result: 30;
+- at j=5: max(F(3-1, 5), 20 + F(3-1, 5-3)) -> max(22, 32). Result: 32.
+
+Row i=4 I will fill without explanation.
+
+| i | j=0 | j=1 | j=2 | j=3 | j=4 | j=5 |
+|-----|-----|-----|-----|-----|-----|-----|
+| **i=0** | 0 | 0 | 0 | 0 | 0 | 0 |
+| **i=1** | 0 | 0 | 12 | 12 | 12 | 12 |
+| **i=2** | 0 | 10 | 12 | 22 | 22 | 22 |
+| **i=3** | 0 | 10 | 12 | 22 | 30 | 32 |
+| **i=4** | 0 | 10 | 15 | 25 | 30 | 37 |
