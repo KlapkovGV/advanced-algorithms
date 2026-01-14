@@ -146,3 +146,69 @@ Row i=4 I will fill without explanation.
 | **i=2** | 0 | 10 | 12 | 22 | 22 | 22 |
 | **i=3** | 0 | 10 | 12 | 22 | 30 | 32 |
 | **i=4** | 0 | 10 | 15 | 25 | 30 | 37 |
+
+**Backtracking phase of the 0/1 Knapsack Problem**
+
+While the previous section explained how to find the maximum value, this section explains how to identify which specific items make up that value.
+
+**1. The Completed DP Table**
+- final answer: the value at V(4,5)=37 is the maximum possible value for a knapsack with capacity 5.
+
+**2. Backtracking Logic**
+
+To find the items, we start from the bottom-right (i=4, j=5) and work backwards using this rule:
+
+```math
+if V[i,j] > V[i-1,j],
+it\ means\ item\ i\ was\ included.
+```
+
+If the value is the same as the row above it, the item was skepped.
+
+**Step-by-step breakdown:**
+1. Check item 4 (i=4, j=5):
+   - is V(4,5) > V(3,5)? yes;
+   - action: include item 4. New capacity j=5-2=3.
+2. Check item 3 (i=3, j=3):
+   - is V(3,3) > V(2,3)? no;
+   - action: skip item 3. Capacity remains j=3.
+3. Check item 2 (i=2, j=3):
+   - is V(2,3) > V(1,3). yes;
+   - action: include item 2. New capacity j=3-1=2.
+4. Check item 1 (i=1, j=2):
+   - is V(1,2) > V(0,2)? yes;
+   - action: include item 1. Final capacity j=2-2=0.
+  
+The list of selected items is 4, 2, and 1.
+- total weight: 2 (Item 4) + 1 (Item 2) + 2 (Item 1) = 5;
+- total Value: 15 (Item 4) + 10 (Item 2) + 12 (Item 1) = 37.
+
+Items 4, 2, and 1 should be selected.
+
+**Python explanation**
+```python
+def backtrack(m_list, dp_list):
+  i, j = len(dp_list)-1, len(dp_list[0])-1
+  for w in m_list:
+    backtrack_list = []
+    print(dp_list[i][j])
+    while i >= 0 and j >= 0:
+      if dp_list[i][j] > dp_list[i-1][j]:
+        j = j - w
+        backtrack_list.append(dp_list[i][j])
+        i -= 1
+      else:
+        j = j
+        i -= 1
+  return backtrack_list
+
+dp_list = [ [0, 0, 0, 0, 0, 0],
+          [0, 0, 12, 12, 12, 12],
+          [0, 10, 12, 22, 22, 22],
+          [0, 10, 12, 22, 30, 32],
+          [0, 10, 15, 25, 30, 37] ]
+m_list = [2, 1, 3, 2]
+
+result = backtrack(m_list, dp_list)
+print(result)
+```
