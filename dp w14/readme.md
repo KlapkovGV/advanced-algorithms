@@ -217,3 +217,175 @@ m_list = [2, 3, 1, 2]
 result = backtrack(m_list, dp_list)
 print(result)
 ```
+
+### Pseudocode 
+```python
+algorithm DPKnapsack(w[1..n], v[1..n], W)
+// solves the knapsack problem by dynamic programming (bottom up)
+// input: arrays w[1..n] and v[1..n] of weights and values of n items, knapsack capacity W
+// output: table v[0..n, 0..W] that contains the value of an optimal subset in V[n, W] and from which the items of an optimal subset can be found
+for i <- 0 to n do V[i, 0] <- 0
+for j <- 1 to W do V[0, j] <- 0
+for i <- 1 to n do
+  for j <- 1 to W do
+    if j-w[i] >= 0
+      V[i, j] <- max{V[i-1, j], v[i] + V[i-1, j-w[i]]}
+    else V[i,j] <- V[i-1, j]
+return V[n, W], V
+
+algorithm backtrack 
+k <- 0 // size of the list of items in an optimal solution
+j <- W // unused capacity
+for j <- n downto 1 do
+  if V[i, j] > V[i-1, j]
+    k <- k + 1
+    L[k] <- i // include item i
+    j <- j - w[i]
+return L
+```
+
+1. The new problem instance
+
+Apply the bottom-up dynamic programming algorithm using these values:
+- Knapsack Capacity (W): 6;
+- Items Available
+
+| Item | Weight ($w$) | Value ($v$) |
+| :--- | :--- | :--- |
+| 1 | 3 | $25 |
+| 2 | 2 | $20 |
+| 3 | 1 | $15 | 
+| 4 | 4 | $40 |
+| 5 | 5 | $50 |
+
+2. Conceptual Questions Breakdown
+
+**Question (b): How many different optimal subsets exist?**
+
+An "optimal subset" is a combination of items that reaches the absolute maximum value possible for capacity W=6. Sometimes, two different combinations of items can result in the exact same maximum value. For example, if both (Item 1 + Item 3) and (Item 4) resulted in a value of 40 and both fit in the knapsack, you would have two optimal subsets.
+
+**Question (c): How can the DP table identify multiple optimal solutions?**
+
+In the dynamic programming table, we can tell there is more than one optimal subset if, during the calculation of a cell, there is a tie.
+- Recall the formula:
+```math
+ F(i, j) = \max\{F(i - 1, j), v_i + F(i - 1, j - w_i)\}.
+```
+- f F(i - 1, j) is exactly equal to v_i + F(i - 1, j - w_i), it means you could either "leave" or "take" the current item and achieve the same value.
+
+![knapsack](https://github.com/user-attachments/assets/b5bfdd97-b1e7-4e53-9371-2c53fe8e02d9)
+
+1. The Completed DP Table
+   
+The table is filled using the bottom-up approach, where each row represents an item and each column represents a capacity from 0 to 6.
+
+Final Result: The value in the bottom-right cell is 65. This is the maximum value that can be achieved with the given items and capacity.
+
+Item Data:
+- Item 1: w=3,v=25
+- Item 2: w=2,v=20
+- Item 3: w=1,v=15
+- Item 4: w=4,v=40
+- Item 5: w=5,v=50
+
+2. Backtracking to Find the Optimal Subset
+
+The right side of the image shows the logic used to find which items were picked, starting from the final result V(5,6)=65.
+
+Check Item 5: V(5,6)=65, while the row above it V(4,6)=60. Since 65>60, Item 5 is included.
+
+Remaining capacity: 6−5(weight)=1.
+
+Check Item 4: Move to capacity j=1 in the row above. V(4,1)=15 and V(3,1)=15. Since they are equal (15=15), Item 4 is NOT included.
+
+Check Item 3: Still at capacity j=1. V(3,1)=15 while V(2,1)=0. Since 15>0, Item 3 is included.
+
+Remaining capacity: 1−1(weight)=0.
+
+The optimal subset is {Item 5, Item 3}.
+
+3. Answering the Conceptual Questions
+Based on this table, we can now answer the questions from the previous slide:
+
+Part (b) How many optimal subsets?: There is only one optimal subset ({5, 3}) because the maximum value 65 only appears once in the final row.
+
+Part (c) Identifying multiple solutions: You can tell there is more than one optimal solution if you encounter a tie during backtracking. For example, if V[i,j] was exactly equal to v_i+V[i−1,j−w_i], you would have two different paths to follow, leading to two different but equally optimal sets of items.
+
+# A different algorithmic concept: Kadane’s Algorithm for the Maximum Subarray Sum problem
+
+Core Concept
+
+Given an integer array arr[], we must find a contiguous subarray (a slice of the array where elements are next to each other) that results in the highest total sum.
+
+Examples Provided
+
+The image gives three examples to illustrate how the algorithm works:
+
+<img width="752" height="227" alt="image" src="https://github.com/user-attachments/assets/0be680e2-fa7e-4731-bc15-69bf537a5204" />
+
+<img width="599" height="307" alt="image" src="https://github.com/user-attachments/assets/a56fb9c4-5e1d-4611-adc8-b339f7d8c7db" />
+
+<img width="602" height="305" alt="image" src="https://github.com/user-attachments/assets/f03ea23c-16fb-4536-98b7-5015278ec0bb" />
+
+
+<img width="588" height="301" alt="image" src="https://github.com/user-attachments/assets/ad956ff1-1c89-42eb-847d-4deedbf61d4b" />
+
+<img width="600" height="300" alt="image" src="https://github.com/user-attachments/assets/5c2e6e8e-0011-4935-b41f-2bcb1e2281db" />
+
+<img width="590" height="298" alt="image" src="https://github.com/user-attachments/assets/4dda04f7-e5d1-4f03-84b8-b7107ffd4111" />
+
+<img width="599" height="302" alt="image" src="https://github.com/user-attachments/assets/c180b8f5-c2a9-4929-8855-52440605a5c9" />
+
+<img width="596" height="296" alt="image" src="https://github.com/user-attachments/assets/1a466323-4ade-49cc-9ae2-dfbb8d9d1aeb" />
+
+# The Rod Cutting Problem, another classic optimization challenge solved using Dynamic Programming
+
+1. The Core Concept
+
+The goal is to take a rod of length $n$ and determine the best way to cut it into smaller pieces to maximize the total sale price. You are given a price[] array where price[i] represents the market value of a piece of length i.
+
+2. Examples Provided
+
+The image uses three examples to show how different price structures change the optimal cutting strategy:
+
+<img width="748" height="202" alt="image" src="https://github.com/user-attachments/assets/ff31c37a-705f-4a16-b566-cd658341d2af" />
+
+3. Dynamic Programming Approach (Bottom-Up)
+  
+The image describes an efficient solution using Tabulation (filling a dp table from the bottom up): Efficiency: The algorithm runs in O(n^2) time and uses O(n) space.The Logic: To find the max value for a rod of length i, you iterate from 1 to n. For each length, you try cutting it into two pieces of lengths j and (i-j) to see which combination yields the highest profit.Storage: Each result is stored in a dp table so you don't have to recalculate the same lengths multiple times.
+
+**Python Implementation: Rod Cutting**
+```python
+def cut_rod(price):
+    n = len(price)
+    # Initialize a DP table of size n+1 with zeros
+    # dp[i] will store the maximum profit for a rod of length i
+    dp = [0] * (n + 1)
+
+    # Build the table from the bottom up
+    for i in range(1, n + 1):
+        max_val = -1
+        # Check every possible cut for a rod of length i
+        for j in range(1, i + 1):
+            # price[j-1] is the value of a piece of length j
+            # dp[i-j] is the pre-calculated best value for the remainder
+            max_val = max(max_val, price[j-1] + dp[i-j])
+        
+        dp[i] = max_val
+
+    return dp[n]
+
+# Example from the image
+rod_prices = [1, 5, 8, 9, 10, 17, 17, 20]
+print(f"Maximum Profit: {cut_rod(rod_prices)}") 
+# Output: 22
+```
+
+How the Logic Translates
+- The Outer Loop (i): This loop moves through every possible rod length from 1 up to n. By the time we calculate a longer rod, all shorter lengths are already optimized in the dp list;
+- The Inner Loop (j): This represents the "cut." For a rod of length i, we try cutting off a piece of length j and adding it to the best known profit for the remaining length (i - j);
+- The max() Function: This is the heart of DP. It compares the current best value for length i against the new combination being tested.
+
+Complexity Analysis
+- Time Complexity: O(n^2) because of the nested loops used to check every cut for every length;
+- Space Complexity: O(n) because we only need a single array to store the maximum values for each length.
