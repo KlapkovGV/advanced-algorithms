@@ -189,25 +189,30 @@ Items 4, 2, and 1 should be selected.
 ```python
 def backtrack(m_list, dp_list):
   i, j = len(dp_list)-1, len(dp_list[0])-1
-  for w in m_list:
-    backtrack_list = []
-    print(dp_list[i][j])
-    while i >= 0 and j >= 0:
+  backtrack_list = []
+  while i >= 0:
+     for w in m_list:
       if dp_list[i][j] > dp_list[i-1][j]:
+        print(dp_list[i][j])
         j = j - w
-        backtrack_list.append(dp_list[i][j])
-        i -= 1
+        backtrack_list.append(i)
+        print(dp_list[i][j])
+        i = i - 1   
+        print(dp_list[i][j])   
       else:
         j = j
-        i -= 1
+        i = i - 1
   return backtrack_list
 
-dp_list = [ [0, 0, 0, 0, 0, 0],
-          [0, 0, 12, 12, 12, 12],
-          [0, 10, 12, 22, 22, 22],
-          [0, 10, 12, 22, 30, 32],
-          [0, 10, 15, 25, 30, 37] ]
-m_list = [2, 1, 3, 2]
+dp_list = [
+      [0, 0, 0, 0, 0, 0],
+      [0, 0, 12, 12, 12, 12],
+      [0, 10, 12, 22, 22, 22],
+      [0, 10, 12, 22, 30, 32],
+      [0, 10, 15, 25, 30, 37]
+      ]
+
+m_list = [2, 3, 1, 2]
 
 result = backtrack(m_list, dp_list)
 print(result)
