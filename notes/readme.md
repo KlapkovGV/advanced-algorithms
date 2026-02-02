@@ -138,6 +138,20 @@ Concept: Definition of an Algorithm
 - "An algorithm is any well-defined computational procedure that takes some value, or set of values, as input and produces some value, or set of values, as output". Cormen, Thomas H., et al. Introduction to Algorithms. 3rd ed., The MIT Press, 2009.
 - key distinction: while a program is the implementation, the algorithm is the logical sequence of steps itself.
 
+Concept: Identifying which sorting algorithms achieve the optimal O(n log n) time complexity.
+- O(n^2) algorithms: bubble sort and insertion sort;
+- O(n log n) algorithms: heap sort and merge sort.
+
+```python
+def bubble_sort(a):
+  n = len(a)
+  for j in range(n-1, 0, -1):
+    for k in range(j):
+      if a[k+1] < a[k]:
+        a[k], a[k+1] = a[k+1], a[k]
+  return a
+```
+
 ___
 
 ### Recursive computation
@@ -157,4 +171,42 @@ Concept: A Greedy approach makes the best local choice at each step without reco
 - selection vs. systematic search: it does not try every possible solution (which would be Brute Force); it follows a specific heuristic;
 - real-world examples: selection sort and huffman codding.
 
+Concept: Which method is most commonly used to solve complex optimization problems?
+- Dynamic Programming is the standard approach for finding the best possible solution in scenarious with overlapping subproblems.
 
+**Challenge: The Knapsack problem**
+
+A comparison of the Greedy approach vs. Dynamic Programming. 10 kg capacity with items of varying weights and values.
+
+Greedy logic: always picks the highest value-per-kg first.
+```python
+def greedy_knapsack(capacity, items):
+  sorted_items = sorted(items, key=lambda x: x['value']/x['weight'], reverse=True)
+  total_value = 0
+  current_weight = 0
+
+  for item in sorted_items:
+    if current_weight + item['weight'] <= capacity:
+      current_weight += item['weight']
+      total_value += item['value']
+
+  return total_value
+```
+
+Dynamic Programming logic: finds the absolute mathematical maximum.
+```python
+def dp_knapsack(capacity, items):
+  n = len(items)
+  dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+
+  for i in range(1, n+1):
+    item_w = items[i-1]['weight']
+    item_v = items[i-1]['value']
+    for w in range(capacity + 1):
+      if item_w <= w:
+        dp[i][w] = max(dp[i-1][w], dp[i-1][w - item_w] + item_v)
+      else:
+        dp[i][w] = dp[i-1][w]
+
+  return dp[n][capacity]
+```
