@@ -24,6 +24,8 @@ def generate lucas(n_terms):
   return lucas
 ```
 
+___
+
 ### Algorithm Analysis 
 
 **Asymptotic Notation guide**
@@ -111,6 +113,9 @@ Asymptotically better methods exist:
 - Strassen's algorithm: O(n^2.81)
 - modern algorithms (theoretical): down to O(n^2.373)
 
+
+___
+
 ### Data Structures & Logic
 
 **Array indexing**
@@ -119,6 +124,8 @@ Asymptotically better methods exist:
 **Representing logic**
 
 The transition from natural language (algorithm steps) to pseudocode to source code.
+
+___
 
 ### Algorithm Design Theory
 
@@ -131,12 +138,16 @@ Concept: Definition of an Algorithm
 - "An algorithm is any well-defined computational procedure that takes some value, or set of values, as input and produces some value, or set of values, as output". Cormen, Thomas H., et al. Introduction to Algorithms. 3rd ed., The MIT Press, 2009.
 - key distinction: while a program is the implementation, the algorithm is the logical sequence of steps itself.
 
+___
+
 ### Recursive computation
 
 Challenge: combined recursive functions. This demonstrates how to calculate the sum of two different recursive mathematical sequences at a specific point n.
 - function F(n) (Factorical): defined as n x F(n-1).
 - function G(n) (Fibonacci): defined as G(n-1) + G(n-2)
 - solution: F(n) + G(n)
+
+___
 
 ### Algorithm Optimization Strategies
 
