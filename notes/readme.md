@@ -142,6 +142,25 @@ Concept: Identifying which sorting algorithms achieve the optimal O(n log n) tim
 - O(n^2) algorithms: bubble sort and insertion sort;
 - O(n log n) algorithms: heap sort and merge sort.
 
+Concept: Heap Sort paradigm. To which algorithmic approach does Heap Sort belong?
+- Heap Sort is an example of the Decrease and Conquer method. It transforms the input into a "heap" data structure and then repeatedly reduces the problem size by extracting the maximum/minimum element.
+
+Concept: Examples of Decrease and Conquer approach
+- Insertion Sort: consistently reduces the unsorted portion of the list by one element at a time;
+- Binary Search: reduces the search space by half at each step.
+
+```python
+def insertion_sort(arr):
+  for i in range(1, len(arr)):
+    key = arr[i]
+    j = i - 1
+    while j >= 0 and key < arr[j]:
+      arr[j + 1] = arr[j]
+      j -= 1
+    arr[j + 1] = key
+  return arr
+```
+
 ```python
 def bubble_sort(a):
   n = len(a)
@@ -151,6 +170,8 @@ def bubble_sort(a):
         a[k], a[k+1] = a[k+1], a[k]
   return a
 ```
+
+
 
 ___
 
@@ -173,6 +194,15 @@ Concept: A Greedy approach makes the best local choice at each step without reco
 
 Concept: Which method is most commonly used to solve complex optimization problems?
 - Dynamic Programming is the standard approach for finding the best possible solution in scenarious with overlapping subproblems.
+
+Concept: principles of dynamic programming
+
+Dynamic Programming is a method for solving complex problems by breaking them down into simpler subproblems.
+- statement 1: DP avoids re-solving subproblemsby storing their results in a table (memoization);
+- statement 2: DP algorithms often trade memory space to gain significant time efficiency;
+- statement 3: decisions are made at each step to reach the optimal solution.
+
+
 
 **Challenge: The Knapsack problem**
 
@@ -209,4 +239,71 @@ def dp_knapsack(capacity, items):
         dp[i][w] = dp[i-1][w]
 
   return dp[n][capacity]
+```
+
+### Graph Theory & Optimization
+
+
+Challenge: Minimum Spanning Tree - Prim's algorthm
+
+Prim's MST starting from node 0. Step-by-step construction:
+- step 0: S={0}, candidate edges: 0-1(4), 0-2(6), 0-4(8). Pick 0-1 with weight 4;
+- step 1: S={0, 1}, candidates: 0-2(6), 0-4(8), 1-2(5), 1-3(3). Pick 1-3 with weight 3;
+- step 2: S={0, 1, 3}, candidates: 0-2(6), 0-4(8), 1-2(5), 2-3(4), 3-4(7). Pick 2-3 with weight 4;
+- step 3: S={0, 1, 3, 2}, candidates: 0-4(8), 2-5(7), 3-4(7). Pick 3-4 with weight 7;
+- step 4: S={0, 1, 3, 2, 4}, candidates: 0-4(8), 2-5(7), 4-6(6). Pick 4-6 with weight 6;
+- step 5: S={0, 1, 3, 2, 4, 6}, candidaates: 2-5(7), 5-6(2). Pick 5-6 with weight 2;
+- step 6: S={0, 1, 3, 2, 4, 6, 5} - all vertices included.
+
+MST edges: 0–1(4), 1–3(3), 2–3(4), 3–4(7), 4–6(6), 5–6(2)
+
+Total weight: 26
+
+Both 0-2 and 0-4 are not in MST. 
+
+```mermaid
+graph TD
+    0 ---|4| 1
+    0 ---|6| 2
+    0 ---|8| 4
+    1 ---|5| 2
+    1 ---|3| 3
+    2 ---|4| 3
+    2 ---|7| 5
+    3 ---|7| 4
+    4 ---|6| 6
+    5 ---|2| 6
+```
+
+```python
+import heapq
+
+def prim_mst(graph, start_node):
+  mst_weight = 0
+  visited = set()
+  min_heap = [(0, start_node)]
+
+  while min_heap:
+    weight, u = heapq.heappop(min_heap)
+    if u in visited:
+      continue
+
+    visited.add(u)
+    mst_weight += weight
+
+    for v, w n graph[u]:
+      if v not in visited:
+        heapq.heappush(min_heap, (w, v))
+
+  return mst_weight
+
+graph_data = {
+    0: [(1, 4), (2, 6), (4, 8)],
+    1: [(0, 4), (2, 5), (3, 3)],
+    2: [(0, 6), (1, 5), (3, 4), (5, 7)],
+    3: [(1, 3), (2, 4), (4, 7)],
+    4: [(0, 8), (3, 7), (6, 6)],
+    5: [(2, 7), (6, 2)],
+    6: [(4, 6), (5, 2)]
+}
 ```
