@@ -24,6 +24,42 @@ def generate lucas(n_terms):
   return lucas
 ```
 
+**Cryptarithmetic Solver**
+
+```text
+  C A T
++ A D D
+--------
+  T O Y
+```
+
+Each letter represent an unique digit from 0-9.
+
+1. Analyze the hundred column (C + A = T or T0)
+   - since the sum C + A yields a single digit T, the maximum C + A can be is 9 + 8 = 17. So T is 1 if there's a carry, or a digit from 0-9.
+2. Analyze the unit column (T + D = Y or Y + 10)
+   - T + D = Y or T + D = Y + 10 (generating a carry c1 to the tens column). c1 is either 0 or 1.
+3. Analyze the tens column (A + D + c1 = O or O + 10)
+   - A + D + c1 = 0 + 10*c2, where c2 is the carry to the hundreds column (0 or 1).
+4. Analyze the hundreds column with carry: C + A + c2 = T
+   - so, C + A + c2 = T
+  
+Let's test the most constrained part. Since C and A are leading digits, they are not 0. T is also a leading digit of the result.
+
+Asume c2 = 1. Then C + A + 1 = T. Since C and A are at least 1, T is at least 1 + 1 + 1 = 3. This is plausible.
+
+Now, for the tens column to generate a carry(c2=1), we need A + D + c1 >= 10.
+
+T = 7. then C = 7 - A - 1 = 6 - A.
+- А = 2. С = 4.
+
+Tens: A + D = O + 9 -> 2 + D = O + 9 -> D = O + 7. O = 1. D = 8
+
+Units: 7 + 8 = Y + 10 -> Y = 5
+
+All distinct: A=2, C=4, T=7, D=8, O=1, Y=5.
+
+Sum: CAT + ADD = 426 + 288 = 715. TOY = 715. So digits: C=4, A=2, T=7, D=8, O=1, Y=5. Sum = 4+2+7+8+1+5 = 27.
 ___
 
 ### Algorithm Analysis 
@@ -125,6 +161,22 @@ ___
 
 The transition from natural language (algorithm steps) to pseudocode to source code.
 
+**Huffman codding**
+
+| Symbol | Frequency |
+| :--- | :--- |
+| **D** | 0.30 |
+| **A** | 0.25 |
+| **B** | 0.20 |
+| **C** | 0.15 |
+| **E** | 0.10 |
+
+Perform Huffman coding. What is the binary encoding for the sequence C A B D?
+
+- step 1: sort by frequency: E(0.10), C(0.15), B(0.20), A(0.25), D(0.30);
+- step 2: combine smallest two (E, C) -> node (EC, 0.25). New list: B(0.20), A(0.25), EC(0.25), D(0.30);
+- step 3: combine B(0.20) and A(0.25) -> node (BA, 0.45). List: EC(0.25), D(0.30), BA(0.45);
+- step 4: combine EC(0.25) and D(0.30) -> node(ECD, 0.55). 
 ___
 
 ### Algorithm Design Theory
@@ -306,4 +358,25 @@ graph_data = {
     5: [(2, 7), (6, 2)],
     6: [(4, 6), (5, 2)]
 }
+```
+
+Challenge: given the weighted graph below, find the shortest path from A to F and list the sequence of nodes.
+
+Shortest path cost A -> F = 7
+
+Path: A(0) -> C(3) -> E(5) -> G(6) -> F(7)
+
+```mermaid
+graph LR
+    A((A)) --- |4| B((B))
+    A --- |3| C((C))
+    B --- |2| D((D))
+    B --- |3| G((G))
+    C --- |2| E((E))
+    D --- |5| F((F))
+    E --- |1| G((G))
+    G --- |1| F((F))
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#00ff00,stroke:#333,stroke-width:2px
 ```
