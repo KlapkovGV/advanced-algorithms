@@ -149,6 +149,27 @@ Asymptotically better methods exist:
 - Strassen's algorithm: O(n^2.81)
 - modern algorithms (theoretical): down to O(n^2.373)
 
+**Not stable sorting algorithms**
+
+Stable means equal elements retain their original relative order after sorting. Bubble Sort is stable. Selection Sort is not stable by default. When it selects the minimum and swaps it to the front, it can change the order of equal elements. Insertion sort and Timsort are stable.
+
+**Finding Median**
+
+Challenge: fird the median of the following data set: [6, 15, 3, 20, 11, 7, 18, 4, 13, 9]
+
+Step 1: **!!!sort the array!!!** Sorted array: [3, 4, 6, 7, 9, 11, 13, 15, 18. 20]
+
+Step 2: Determine median posotion. Number of elements n=10. Median is averange of the two middle elements (n/2 and n/2 + 1 in sorted order)
+
+Values at indices of middle position: arr[4] = 9, and arr[5] = 11
+
+Step 3: calculate median - median = (9 + 11) / 2 = 10.
+
+Note: if the list length if odd, the median is simply the middle element after sorting. 
+
+**Quicksort worst-case complexity**
+
+Worst case occurs when pivot splits array into size n-1 and 0 every time -> recursion depth n and total comparisons are n + (n-1) + ... + 1 which is O(n^2).
 
 ___
 
@@ -176,7 +197,77 @@ Perform Huffman coding. What is the binary encoding for the sequence C A B D?
 - step 1: sort by frequency: E(0.10), C(0.15), B(0.20), A(0.25), D(0.30);
 - step 2: combine smallest two (E, C) -> node (EC, 0.25). New list: B(0.20), A(0.25), EC(0.25), D(0.30);
 - step 3: combine B(0.20) and A(0.25) -> node (BA, 0.45). List: EC(0.25), D(0.30), BA(0.45);
-- step 4: combine EC(0.25) and D(0.30) -> node(ECD, 0.55). 
+- step 4: combine EC(0.25) and D(0.30) -> node(ECD, 0.55). List: BA(0.45), ECD(0.55);
+- step 5: combine BA and ECD -> Root(1.00);
+- step 6: assign codes arbitrary left=0, right=1:
+  - BA split: B (left from BA): code starts 0..., A (right from BA): 1...
+  - ECD split: EC (left from ECD): code starts 0..., D (right from ECD): 1...
+  - EC split: E (left from EC): code 00, C (right from EC): 01.
+
+  Treverse from root:
+
+  - A: from root -> right(BA) -> right(A) = 11
+  - B: root→right(BA)→left(B) = 10
+  - C: root→left(ECD)→left(EC)→right(C) = 001
+  - D: root→left(ECD)→right(D) = 01
+  - E: root→left(ECD)→left(EC)→left(E) = 000
+- step 7: encode "C A B D":
+  - C = 001;
+  - A = 11;
+  - B = 10;
+  - D = 01.
+ 
+Concatenated: 001111001
+
+**Build Max-Heap**
+
+Challenge: apply MaxHeap function to array A = {3, 7, 2, 8, 5, 12, 9, 6, 1, 4}. What is resulting array?
+
+Example walkthrough
+
+For array [3, 7, 2, 8, 5, 12, 9, 6, 1, 4] visualization as tree
+
+```text
+          3
+       /     \
+      7       2
+    /   \   /   \
+   8    5  12    9
+  / \   /
+ 6   1 4
+```
+
+Final max-heap:
+```text
+          12
+       /      \
+      8        9
+    /   \    /   \
+   6     5  2     3
+  / \   /
+ 1   7 4
+```
+
+```python
+def build_max_heap(arr):
+  n = len(arr)
+  for i in range(n//2 - 1, -1, -1): # the // synbol represent integer division
+    heapify(arr, n, i)
+  return arr
+
+def heapify(arr, n, i):
+  largest = i
+  left = 2*i + 1
+  right = 2*1 + 2
+
+  if left < n and arr[left] > arr[largest]:
+    largest = left
+  if right < n and arr[right] > arr[largest]:
+    largest = right
+  if largest != i: # the != symbol stands fpr not equal to
+    arr[i], arr[largest] = arr[largest], arr[i]
+    heapify(arr, n, largest)
+```
 ___
 
 ### Algorithm Design Theory
@@ -224,6 +315,13 @@ def bubble_sort(a):
 ```
 
 
+**Lomuto Partition**
+
+Challenge: Using first element as pivot, apply Lomuto partition. What is the index of the pivot element in the updated array?
+
+Given the array: [22, 17, 5, 12, 19, 8, 25, 14, 10, 3]
+
+Initialization i = 0. Iterate j=1 to 9, if arr[j] <= pivot, then i++, swap arr[i] and arr[j]. Pivot will be at index 8.
 
 ___
 
@@ -233,6 +331,28 @@ Challenge: combined recursive functions. This demonstrates how to calculate the 
 - function F(n) (Factorical): defined as n x F(n-1).
 - function G(n) (Fibonacci): defined as G(n-1) + G(n-2)
 - solution: F(n) + G(n)
+
+Concept: Josephus problem
+
+In the Josephus problem, where every 3rd person is eliminated (k=3), and we start with n=41 people numbered 1 to 41 in a circle, which position number survives to the end?
+
+The Josephus reccurrence is:
+- J(1, k) = 0 (0-indexed position);
+- J(n, k) = (J(n-1, k) + K) mod n.
+
+We compute step-by-step efficiently. Result for J(31,3) = (28+3) mod 31 = 31 mod 31 = 0. Result for J(41,3) = 30 (0-indexed). add 1 to 30 we'll get 31(1-indexed). So person #31 survives.
+
+**Important techniques in computer science**
+
+| Aspect | Recursion | Divide & Conquer | Memoization | Tabulation |
+|--------|-----------|------------------|-------------|------------|
+| **Approach** | Self-calling function | Recursive splitting | Recursive + cache | Iterative + table |
+| **Direction** | Top-down | Top-down | Top-down | Bottom-up |
+| **Storage** | Call stack | Call stack | Cache dictionary | DP table/array |
+| **Efficiency** | Can be inefficient (repeats) | Depends on problem | Efficient (avoids repeats) | Efficient (no repeats) |
+| **When to use** | Natural recursive problems | Problems that can be split | When some subproblems may not be needed | When all subproblems are needed |
+| **Example** | Factorial, tree traversal | Merge sort, binary search | Fibonacci with cache | Fibonacci with table |
+
 
 ___
 
@@ -292,6 +412,44 @@ def dp_knapsack(capacity, items):
 
   return dp[n][capacity]
 ```
+
+**Coin Row Problem**
+
+Problem: given coins with values: [5, 1, 3, 9, 2, 8, 4], find the maximum sum of coins we can pick such that no two chosen coins are adjacent.
+
+We solve using dynamic programming. Let F[i] = max sum using first i coins. Recurrence: F[i] = max(F[i-1], coins[i-1] + F[i-2])
+
+Important that base are F[0] = 0, F[1] = coins[0] or 5.
+
+- F[0] = 0
+- F[1] = max(0, 5) = 5
+- F[2] = max(F[1]=5, coins[1]=1 + F[0]=0) = max(5, 1) = 5
+- F[3] = max(F[2]=5, coins[2]=3 + F[1]=5) = max(5, 8) = 8
+- F[4] = max(F[3]=8, coins[3]=9 + F[2]=5) = max(8, 14) = 14
+- F[5] = max(F[4]=14, coins[4]=2 + F[3]=8) = max(14, 10) = 14
+- F[6] = max(F[5]=14, coins[5]=8 + F[4]=14) = max(14, 22) = 22
+- F[7] = max(F[6]=22, coins[6]=4 + F[5]=14) = max(22, 18) = 22
+
+Maximum sum is 22. Chosen coins: index 0, index 3, index 5. 
+
+Checking: 5 + 9 + 8 = 22
+
+
+**Coin Change**
+
+Problem: given coin denominations [1, 4, 6, 9], find the minimum number of coins needed to make sum = 12
+
+The DP table builds up solution s from smallest to largest. This avoids trying all combinations and solves it in O(sum x number of coin).
+
+After computing for sum from 1 to 12 minimum coins will be 2 (6 x 6)
+
+Visual of dp table
+
+```text
+Sum: 0  1  2  3  4  5  6  7  8  9  10 11 12
+dp:  0  1  2  3  1  2  1  2  2  1  2  3  2
+```
+___
 
 ### Graph Theory & Optimization
 
